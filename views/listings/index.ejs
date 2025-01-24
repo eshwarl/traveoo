@@ -1,0 +1,114 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <style>
+        #filters{
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        .filter{
+            text-align: centre;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+        .filter:hover{
+            opacity: 1;
+            cursor: pointer;
+        }
+        .tax-info{
+            display: none;
+        }
+        .tax-toggle{
+          border: 1px solid black;
+          border-radius: 1rem;
+          height: 3.5rem;
+          padding: 1rem;
+          margin-left: 6rem;
+          display: flex;
+          align-items: center;
+
+        }
+    </style>
+
+    <!-- <h2>All Listings</h2> -->
+     <div id="filters">
+        <div class="filter">
+           <div> <i class="fa-solid fa-fire"></i></div>
+           <p> Trending</p>
+        </div>
+        <div class="filter">
+            <div> <i class="fa-solid fa-bed"></i></div>
+            <p> Rooms</p>
+         </div>
+         <div class="filter">
+            <div> <i class="fa-solid fa-city"></i></div>
+            <p> iconic cities</p>
+         </div>
+         <div class="filter">
+            <div> <i class="fa-solid fa-bed"></i></div>
+            <p>mountains</p>
+         </div>
+         <div class="filter">
+            <div> <i class="fa-solid fa-mountain"></i></div>
+            <p>castles</p>
+         </div>
+         <div class="filter">
+            <div> <i class="fa-solid fa-person-swimming"></i></div>
+            <p>Amazing pool</p>
+         </div>
+         <div class="filter">
+            <div> <i class="fa-solid fa-warehouse"></i></div>
+            <p>Farms</p>
+         </div>
+         <div class="tax-toggle">
+         <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">display total taxes</label>
+          </div>
+        </div>
+     </div>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for (let listing of allListings) { %>
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+                <div class="card col listing-card" style="width: 20rem;">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height:20rem">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= listing.title %></b><br>
+                            <!-- Check if listing.price is valid -->
+                            <% if (listing.price != null && !isNaN(listing.price)) { %>
+                                &#8377;<%= listing.price.toLocaleString("en-IN") %>/day
+                                <i class="tax-info">&nbsp; &nbsp; +18%GST</i>
+                            <% } else { %>
+                                Price not available
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</body>
+
+<script>
+    // Get the element with ID 'flexSwitchCheckdefault'
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+
+    // Add an event listener for the 'click' event
+    taxSwitch.addEventListener("click", () => {
+        // Get elements with the class name 'tax-info'
+        let taxInfo = document.getElementsByClassName("tax-info");
+
+        // Log the taxInfo collection to the console
+        console.log(taxInfo);
+
+        // Example: If you want to toggle visibility for all elements with the 'tax-info' class
+        Array.from(taxInfo).forEach((element) => {
+            element.style.display = 
+                element.style.display === "none" ? "block" : "none";
+        });
+    });
+</script>
